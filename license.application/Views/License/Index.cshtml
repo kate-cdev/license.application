@@ -1,0 +1,74 @@
+﻿@model IEnumerable<license.application.Models.License>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin-bottom: 20px;" class="text-center border-bottom">
+    <h5 class="display-4 text-primary"><b style="font-size: 25px;">License List</b></h5>
+</div>
+
+<p>
+    <a style="float: right; margin-bottom: 10px;" class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr class="table-primary">
+            <th>
+                @Html.DisplayNameFor(model => model.Key)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpireDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedUtc)
+            </th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.Machine != null)
+                        {
+                            <b style="color: gray; font-size: 1.2em;"> @Html.DisplayFor(modelItem => item.Key)</b>
+                        }
+                        else
+                        {
+                            <b style="color: darkcyan; font-size: 1.2em;"> @Html.DisplayFor(modelItem => item.Key)</b>
+                        }
+                    </td>
+                    <td>
+                        @if (item.ExpireDate > DateTime.Now)
+                        {
+                            <span style="color: blue"> @item.ExpireDate.ToString("dd/MM/yyyy")</span>
+                        }
+                        else
+                        {
+                            <span style="color: gray"> @item.ExpireDate.ToString("dd/MM/yyyy")</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedUtc)
+                    </td>
+                    <td>
+                        <a style="margin-left: 5px;" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-primary"></i></a>
+                       
+                    </td>
+                    <th>
+                        <form method="Delete" asp-action="Delete" asp-route-id="@item.Id"
+                              onclick="return confirm('Are you sure you want to delete this?')">
+                            <button style="border: none; background: transparent;" type="submit"><i class="fas fa-trash-alt text-warning"></i></button>
+                        </form>
+                    </th>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
